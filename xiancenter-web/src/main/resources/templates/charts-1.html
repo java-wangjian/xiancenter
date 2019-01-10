@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>宿主机监控</title>
+</head>
+<body>
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统监控 <span class="c-gray en">&gt;</span> 宿主机监控 
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+</nav>
+<div class="page-container">
+	<div class="f-14 c-error">CPU不稳定</div>
+	<div id="container" style="min-width:700px;height:300px"></div>
+</div>
+<div class="page-container">
+	<div class="f-14 c-error">特别声明</div>
+	<div id="container1" style="float:left;width:50%;height:300px"></div>
+	<div id="container2" style="float:right;width:50%;height:300px"></div>
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/hcharts/Highcharts/5.0.6/js/highcharts.js"></script>
+<script type="text/javascript" src="lib/hcharts/Highcharts/5.0.6/js/modules/exporting.js"></script>
+<script type="text/javascript">
+Highcharts.setOptions({
+		global: {
+				useUTC: false
+		}
+});
+function activeLastPointToolip(chart) {
+		var points = chart.series[0].points;
+		chart.tooltip.refresh(points[points.length -1]);
+}
+var chart = Highcharts.chart('container', {
+		chart: {
+				type: 'spline',
+				marginRight: 10,
+				events: {
+						load: function () {
+								var series = this.series[0],
+										chart = this;
+								activeLastPointToolip(chart);
+								setInterval(function () {
+										var x = (new Date()).getTime(), // 当前时间
+												y = Math.random();          // 随机值
+										series.addPoint([x, y], true, true);
+										activeLastPointToolip(chart);
+								}, 1000);
+						}
+				}
+		},
+		title: {
+            text: 'CPU History',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Source: 西安中心',
+            x: -20
+        },
+		xAxis: {type: 'datetime',
+				title: {
+						text: 'second'
+				}
+		},
+		yAxis: {
+				title: {
+						text: 'percent (%)'
+				}
+		},
+		tooltip: {
+				formatter: function () {
+						return '<b>' + this.series.name + '</b><br/>' +
+								Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+								Highcharts.numberFormat(this.y, 2);
+				}
+		},
+		legend: {
+				enabled: false
+		},
+		series: [{
+				name: 'CPU_1',
+				data: (function () {
+						// 生成随机值
+						var data = [],
+								time = (new Date()).getTime(),
+								i;
+						for (i = -19; i <= 0; i += 1) {
+								data.push({
+										x: time + i * 1000,
+										y: Math.random()
+								});
+						}
+						return data;
+				}())
+		}]
+});
+	
+$(function () {
+    Highcharts.chart('container1', {
+        title: {
+            text: 'Memory and Swap History',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Source: 西安中心',
+            x: -20
+        },
+        xAxis: {
+            categories: ['60','50','40', '30', '20', '10', '0']
+        },
+        yAxis: {
+            title: {
+                text: 'percent (%)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '%'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'memory',
+            data: [7.0, 9.5, 14.5, 21.5, 25.2, 26.5, 23.3, 13.9, 9.6,55,3]
+        }, {
+            name: 'swap',
+            data: [0.2, 25, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+        }]
+    });
+});
+	
+$(function () {
+    Highcharts.chart('container2', {
+        title: {
+            text: 'NetWork History',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Source: 西安中心',
+            x: -20
+        },
+        xAxis: {
+            categories: ['60','50','40', '30', '20', '10', '0']
+        },
+        yAxis: {
+            title: {
+                text: 'kib/s'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '%'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Receiving',
+            data: [0.9, 0.5, 0.5, 0.5, 0.2, 0.5, 0.3, 0.9, 0.6,0.6,0.3]
+        }, {
+            name: 'sending',
+            data: [0.2, 0.2, 0.7, 0.3, 0.1, 0.3, 0.8, 0.1, 0.3, 0.1, 0.6, 0.5]
+        }]
+    });
+});
+</script>
+</body>
+</html>

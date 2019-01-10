@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ ==============================================================
+  ~ Copyright (c) 2012 ~ 2018. anyuncloud.com All rights reserved.
+  ~                                           Created by wangjian
+  ~ ==============================================================
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.anyun.user.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.anyun.user.models.User">
+        <id column="uuid" jdbcType="VARCHAR" property="uuid" />
+        <result column="code" jdbcType="VARCHAR" property="code" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="range" jdbcType="VARCHAR" property="range" />
+        <result column="status" jdbcType="VARCHAR" property="status" />
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+        <result column="type" jdbcType="VARCHAR" property="type" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="key1" jdbcType="VARCHAR" property="key1" />
+        <result column="key2" jdbcType="VARCHAR" property="key2" />
+        <result column="key3" jdbcType="VARCHAR" property="key3" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    uuid, code, name, range, status, start_time, end_time, type, create_time,
+    update_time, key1, key2, key3
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where uuid = #{uuid,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from user
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </delete>
+    <delete id="deleteByPrimaryKeyList" parameterType="list">
+        delete from user
+        where uuid in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <insert id="insert" parameterType="com.anyun.user.models.User">
+    insert into user (uuid, code, name,
+      range, status, start_time,
+      end_time, type, create_time,
+      update_time, key1, key2,
+      key3)
+    values (#{uuid,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+      #{range,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP},
+      #{endTime,jdbcType=TIMESTAMP}, #{type,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP}, #{key1,jdbcType=VARCHAR}, #{key2,jdbcType=VARCHAR},
+      #{key3,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.anyun.user.models.User">
+        insert into zcdc_zx
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">
+                zx_uuid,
+            </if>
+            <if test="code != null">
+                zx_code,
+            </if>
+            <if test="name != null">
+                zx_name,
+            </if>
+            <if test="range != null">
+                zx_range,
+            </if>
+            <if test="status != null">
+                zx_status,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="type != null">
+                zx_type,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="key1 != null">
+                key1,
+            </if>
+            <if test="key2 != null">
+                key2,
+            </if>
+            <if test="key3 != null">
+                key3,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">
+                #{zxUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                #{zxCode,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{zxName,jdbcType=VARCHAR},
+            </if>
+            <if test="range != null">
+                #{zxRange,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{zxStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="type != null">
+                #{zxType,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="key1 != null">
+                #{key1,jdbcType=VARCHAR},
+            </if>
+            <if test="key2 != null">
+                #{key2,jdbcType=VARCHAR},
+            </if>
+            <if test="key3 != null">
+                #{key3,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.anyun.user.models.User">
+        update zcdc_zx
+        <set>
+            <if test="code != null">
+                code = #{zxCode,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{zxName,jdbcType=VARCHAR},
+            </if>
+            <if test="range != null">
+                range = #{zxRange,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{zxStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="type != null">
+                type = #{zxType,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="key1 != null">
+                key1 = #{key1,jdbcType=VARCHAR},
+            </if>
+            <if test="key2 != null">
+                key2 = #{key2,jdbcType=VARCHAR},
+            </if>
+            <if test="key3 != null">
+                key3 = #{key3,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where uuid = #{uuid,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.anyun.user.models.User">
+    update user
+    set code = #{zxCode,jdbcType=VARCHAR},
+      name = #{zxName,jdbcType=VARCHAR},
+      range = #{zxRange,jdbcType=VARCHAR},
+      status = #{zxStatus,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      type = #{zxType,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      key1 = #{key1,jdbcType=VARCHAR},
+      key2 = #{key2,jdbcType=VARCHAR},
+      key3 = #{key3,jdbcType=VARCHAR}
+    where uuid = #{uuid,jdbcType=VARCHAR}
+  </update>
+
+    <!-- 列表查询  -->
+    <select id="findPageDo" resultMap="BaseResultMap" parameterType="com.anyun.user.models.PageDo">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        order by create_time desc
+        limit #{limit} offset #{offset}
+    </select>
+
+    <!-- 列表查询总条数  -->
+    <select id="findPageDoCount" resultType="java.lang.Integer" parameterType="com.anyun.user.models.PageDo">
+    select count(*) count
+    from user
+  </select>
+    <select id="queryMaxZxCode" resultType="String">
+    select max(code)
+    from user
+  </select>
+
+    <update id="updateStatusu2Stop" parameterType="list">
+        update user
+        set status = '2',end_time = now()
+        where uuid in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+</mapper>

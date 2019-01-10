@@ -1,0 +1,46 @@
+<!--
+  ~ ==============================================================
+  ~ Copyright (c) 2012 ~ 2018. anyuncloud.com All rights reserved.
+  ~                                           Created by wangjian
+  ~ ==============================================================
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+    function myfun(){
+        // var mydata={"name":"zhou","age":"23"};
+
+        $.ajax({
+            type: 'GET',
+            // url: 'http://192.168.252.25:8080/ajaxtest',
+            url: 'http://192.168.254.32:8080/hosts/page?pageIndex=1&pageSize=10',
+            jsonp : "callback",
+            // contentType: "application/json;charset=utf-8",
+            // jsonp: 'jsonpCallback',
+            // dataType: 'jsonp',
+            success : function (data) {
+                console.log("success");
+                alert(data);
+            },
+            error : function (data) {
+                console.log("error");
+                console.log(data)
+
+            }
+        });
+
+    }
+
+</script>
+<input onclick="myfun()" type="button" value="click here">
+<div id="showDiv"></div>
+
+</body>
+</html>
